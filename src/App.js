@@ -1,14 +1,18 @@
 import React from 'react';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import Nav from "./components/Nav";
 import Titles from './components/Titles';
 import Form from './components/Form';
 import Weather from "./components/Weather";
+import Chart from "./components/Chart";
 //  import "~react-vis/dist/style";
 import './App.css';
-
 
 const API_KEY = "665ca35e37cfb8e869ec941288c96ed0";
 
 class App extends React.Component {
+
+
   state = {
     city: undefined,
     country: undefined,
@@ -46,11 +50,64 @@ class App extends React.Component {
 
     })
   }
-  render(){
+
+  // The charts states are defined here
+  constructor(){
+   super();
+   this.state = {
+     chartData : {}
+   }
+  }
+// we just defined the getChartData below now we put it into the lifecycle . 
+  componentWillMount(){
+    this.getChartData();
+  }
+
+  // defining the getChartData()
+   getChartData(){
+     // ajax call here
+     //Now we will take the chartData from the state and fill it here, pass the object on chartData
+     this.setState({
+        charData : {
+          labels: ['Londondfd', 'Paris', 'Helsinki', 'Oulu', 'Kajaani', 'Fili', 'Gdfd', 'Hanyd'],
+          datasets : [ 
+              {
+                  label: 'Population', 
+                  data: [
+                              617594,
+                              404930,
+                              504930,
+                              409302,
+                              502739, 
+                              603849
+                  ],
+                  backgroundColor:[
+                      'red',
+                      'green',
+                      'blue',
+                      'pink',
+                      'brown'
+                  ]
+              }
+          ]
+      }  
+     })
+   }
+
+ render(){
     //  <Form getWeather = { this.getWeather}/> -This gives the Form.js file an access to the getWeather 
     // function, so Form.js can work with the getWeather
   return (
      <div>
+          <Router>
+            <div className= "App">
+             <Switch>
+               <Nav/>
+               <Route path = "/" exact component= {Form} />
+               <Route path = "/chart" component= {Chart} />
+             </Switch>
+            </div>
+          </Router>
           <Titles/>
           
           <Form getWeather = { this.getWeather}/>
@@ -65,6 +122,7 @@ class App extends React.Component {
                 weather = {this.state.weather} 
                 error = {this.state.error} 
           />
+          <Chart chartData = {this.state.charData}  location = { this.state.city}/>
       </div>
   );
   }
