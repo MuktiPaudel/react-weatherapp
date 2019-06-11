@@ -36,7 +36,7 @@ export class Chart extends Component {
                         <br></br>
                     </div>
                 
-        </div>
+            </div>
         )
     }
 }

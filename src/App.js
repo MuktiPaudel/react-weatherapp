@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import Nav from "./components/Nav";
 import Titles from './components/Titles';
 import Form from './components/Form';
@@ -99,30 +99,28 @@ class App extends React.Component {
     // function, so Form.js can work with the getWeather
   return (
      <div>
-          <Router>
-            <div className= "App">
-             <Switch>
-               <Nav/>
-               <Route path = "/" exact component= {Form} />
-               <Route path = "/chart" component= {Chart} />
-             </Switch>
-            </div>
-          </Router>
-          <Titles/>
-          
-          <Form getWeather = { this.getWeather}/>
-
-          <Weather
-                temprature = {this.state.temprature}
-                city ={ this.state.city}
-                country =  { this.state.country}
-                air_pressure = {this.state.air_pressure}
-                longititude = {this.state.longititude}
-                latitude = {this.state.latitude}
-                weather = {this.state.weather} 
-                error = {this.state.error} 
-          />
-          <Chart chartData = {this.state.charData}  location = { this.state.city}/>
+          <BrowserRouter>
+           <Nav />
+              <Route path="/" exact render={() =>
+                <Form getWeather = { this.getWeather}/>
+              } />
+              <Route path="/" exact render={() => 
+                  <Weather
+                    temprature = {this.state.temprature}
+                    city ={ this.state.city}
+                    country =  { this.state.country}
+                    air_pressure = {this.state.air_pressure}
+                    longititude = {this.state.longititude}
+                    latitude = {this.state.latitude}
+                    weather = {this.state.weather} 
+                    error = {this.state.error} 
+                   />
+              } />
+              <Route path="/chart" exact render={() =>
+                <Chart chartData = {this.state.charData}  location = { this.state.city}/>
+              } />             
+          </BrowserRouter>
+        
       </div>
   );
   }
